@@ -150,6 +150,9 @@ excel
 =MIN(datos!I:I)
 #### Total de boletos vendidos por aerolínea:
 =SUMIF(datos!$B$2:$B$301, $A2, datos!$I$2:$I$301)
+
+![tablas](https://github.com/luisvarela-code/analisis-completo-datos/blob/main/graficas%20excel/tablas.png?raw=true "tablas")
+
 # 4. ARCHIVO PYTHON: analisis_aviones.py
 CÓDIGO PRINCIPAL DE ANÁLISIS:
 python
@@ -185,39 +188,61 @@ print(datos.head(30));
 aerolineas = datos.groupby('airline')['airline'].count()
 aerolineas.plot(kind='bar', color='skyblue', edgecolor='black')
 
+![image url](https://github.com/luisvarela-code/analisis-completo-datos/blob/main/graficas%20python/grafica_1.png?raw=true)
+
 # 2. Gráfica de pastel por estatus de vuelos
 status_counts = datos['status'].value_counts()
 plt.pie(status_counts.values, labels=status_counts.index, autopct='%1.1f%%')
 
+![image url](https://github.com/luisvarela-code/analisis-completo-datos/blob/main/graficas%20python/grafica_6.png?raw=true)
+
 # 3. Histograma de retrasos
 sns.histplot(datos['delay_minutes'], bins=30, color='purple', kde=True)
 
-# 4. Top 10 rutas con mayor retraso promedio
+![image url](https://github.com/luisvarela-code/analisis-completo-datos/blob/main/graficas%20python/grafica_7.png?raw=true)
+
+# 4. Top 20 rutas con mayor retraso promedio
 rutas = datos.groupby('flight_id')['delay_minutes'].mean()
 rutas = rutas.sort_values(ascending=False).head(20)
+
+![image url](https://github.com/luisvarela-code/analisis-completo-datos/blob/main/graficas%20python/grafica_12.png?raw=true)
 
 # 5. Promedio de retraso por aeronave
 promedio_retraso_aeronave = datos.groupby('aircraft_type')['delay_minutes'].mean()
 promedio_retraso_aeronave.plot(kind='bar', color='gold', edgecolor='black')
 
+
+![image url](https://github.com/luisvarela-code/analisis-completo-datos/blob/main/graficas%20python/grafica_14.png?raw=true)
+
 # MÉTRICAS CALCULADAS EN PYTHON:
-print(f'Total de vuelos faltantes: {total_vuelos_faltantes}')
-print(f'Promedio de retraso: {promedio_retraso} minutos')
-print(f'Aerolinea con el boleto mas caro: {aerolinea_con_boleto_mas_caro}')
-print(f'Precio del boleto mas caro: {precio_boleto_mas_caro}')
+- print(f'Total de vuelos faltantes: {total_vuelos_faltantes}')
+- print(f'Promedio de retraso: {promedio_retraso} minutos')
+- print(f'Aerolinea con el boleto mas caro: {aerolinea_con_boleto_mas_caro}')
+- print(f'Precio del boleto mas caro: {precio_boleto_mas_caro}')
+
+![image url](https://github.com/luisvarela-code/analisis-completo-datos/blob/main/datos.png?raw=true)
+  
+
+
 📊 RESULTADOS INTEGRADOS DE LOS TRES ARCHIVOS
 A. MÉTRICAS OPERATIVAS (CONSISTENTES ENTRE SQL, EXCEL Y PYTHON)
 1. Distribución por Aerolínea:
-- Aerolínea	Vuelos Totales	% del Total	Fuente
-- VivaFly	105	35%	Excel: =COUNTIF(datos!$B:$B,"VivaFly")
-- AeroMX	76	25.3%	SQL: COUNT(*) GROUP BY airline
-- GlobalAir	76	25.3%	Python: datos['airline'].value_counts()
-- SkyJet	43	14.3%	Todas las fuentes coinciden
-- 2. Estado de Vuelos:
-- Estado	Cantidad	Porcentaje	Fuente Principal
-- On Time	208	69.3%	Python: status_counts
-- Delayed	85	28.3%	Gráfica de pastel Python
-- Cancelled	7	2.3%	SQL: WHERE status = 'Cancelled'
+
+| Aerolínea | Vuelos Totales | % del Total | Fuente |
+| :--- | :--- | :--- | :--- |
+| VivaFly | 105 | 35% | Excel: =COUNTIF(datos!$B:$B,"VivaFly") |
+| AeroMX | 76 | 25.3% | SQL: COUNT(*) GROUP BY airline |
+| GlobalAir | 76 | 25.3% | Python: datos['airline'].value_counts() |
+| SkyJet | 43 | 14.3% | Todas las fuentes coinciden |
+
+2. Estado de Vuelos:
+
+| Estado | Cantidad | Porcentaje | Fuente Principal |
+| :--- | :--- | :--- | :--- |
+| On Time | 208 | 69.3% | Python: status_counts |
+| Delayed | 85 | 28.3% | Gráfica de pastel Python |
+| Cancelled | 7 | 2.3% | SQL: WHERE status = 'Cancelled' |
+
 3. Retrasos por Tipo de Aeronave:
 
 | Resultado de consulta SQ  | |
@@ -254,7 +279,6 @@ WHERE delay_minutes > 30;
 ```
 2. Desde Excel (Hoja2):
 Fila AeroMX: =SUMIFS(datos!$I:$I, datos!$B:$B, $A3, datos!$H:$H, "Cancelled")
-
 Resultado: $11,095 (pérdidas por cancelaciones de AeroMX)
 
 C. RUTAS CRÍTICAS IDENTIFICADAS
@@ -297,39 +321,32 @@ SQL: 6 cancelaciones (7.89% de sus vuelos)
 ```
 
 - Excel: Fórmula =COUNTIFS(datos!$B:$B, $A3, datos!$H:$H, "Cancelled") confirma 6
-
 - Python: vuelos_cancelados_por_aerolinea muestra AeroMX con 6 cancelaciones
-
 - Hallazgo 2: VivaFly es la Más Puntual
 - SQL: 0 cancelaciones en consultas
-
 - Excel: =COUNTIFS(datos!$B:$B, $A2, datos!$H:$H, "Cancelled") = 0
-
 - Python: No aparece en listado de cancelaciones por aerolínea
-
 - Hallazgo 3: E190 es el Avión con Peor Desempeño
 - SQL: Retraso promedio de 37.14 minutos (mayor de todos)
-
 - Python: Gráfica de barras muestra E190 con mayor barra de retraso
-
 - Consistencia: Ambas herramientas muestran el mismo orden de desempeño
 
 📈 VISUALIZACIONES COINCIDENTES ENTRE EXCEL Y PYTHON
 Gráficas Generadas en Python que Validan Datos de Excel:
+
 Distribución de Aerolíneas:
 
-- Python: Gráfica de barras con VivaFly como la más alta (105 vuelos)
-- Excel: Tabla en Hoja2 confirma 105 para VivaFly
+- Python: Gráfica de barras con GlobalAir como la más alta (105 vuelos)
+- Excel: Tabla en Hoja2 confirma 105 para GlobalAir
 
-Estado de Vuelos:
-
-- Python: Gráfico de pastel 69.3% On Time, 28.3% Delayed, 2.3% Cancelled
-- Excel: Filtros y conteos manuales confirman mismos porcentajes
+![image url](https://github.com/luisvarela-code/analisis-completo-datos/blob/main/graficas%20python/grafica_1.png?raw=true)
 
 Retrasos por Tipo de Avión:
 
 - Python: E190 muestra la barra más alta en gráfica
 - SQL: Consulta ordenada por retraso promedio confirma E190 en último lugar
+
+  ![image url](https://github.com/luisvarela-code/analisis-completo-datos/blob/main/graficas%20python/grafica_14.png?raw=true)
 
 🎯 RECOMENDACIONES BASADAS EN ANÁLISIS TRIPLE-VERIFICADO
 Acción 1: 
