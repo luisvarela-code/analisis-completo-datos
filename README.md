@@ -121,8 +121,6 @@ WHERE status = 'Cancelled' OR delay_minutes > 30;
 | flight_id | airline | origin | destination | departure_time | arrival_time | delay_minutes | status | ticket_price | aircraft_type |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 
-
-
 Ejemplo registro:
 
 | flight_id | airline | origin | destination | departure_time | arrival_time | delay_minutes | status | ticket_price | aircraft_type |
@@ -134,10 +132,10 @@ Ejemplo registro:
 
 excel
 ### Total de vuelos por aerolínea:Total de vuelos por aerolínea:
-=COUNTIF(datos!$B:$B, "VivaFly")
-=COUNTIF(datos!$B:$B, "AeroMX")
-=COUNTIF(datos!$B:$B, "GlobalAir")
-=COUNTIF(datos!$B:$B, "SkyJet")
+- =COUNTIF(datos!$B:$B, "VivaFly")
+- =COUNTIF(datos!$B:$B, "AeroMX")
+- =COUNTIF(datos!$B:$B, "GlobalAir")
+- =COUNTIF(datos!$B:$B, "SkyJet")
 #### Vuelos cancelados por aerolínea:
 =COUNTIFS(datos!$B:$B, $A2, datos!$H:$H, "Cancelled")
 #### Pérdidas por cancelaciones:
@@ -152,7 +150,7 @@ excel
 =MIN(datos!I:I)
 #### Total de boletos vendidos por aerolínea:
 =SUMIF(datos!$B$2:$B$301, $A2, datos!$I$2:$I$301)
-4. ARCHIVO PYTHON: analisis_aviones.py
+# 4. ARCHIVO PYTHON: analisis_aviones.py
 CÓDIGO PRINCIPAL DE ANÁLISIS:
 python
 # importacion de librerias 
