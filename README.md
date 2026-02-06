@@ -27,9 +27,7 @@ Analizar el comportamiento de los vuelos para identificar factores asociados a r
 
 # ANÁLISIS DE DESEMPEÑO OPERATIVO DE VUELOS - DOCUMENTACIÓN TÉCNICA COMPLETA
 ##  ESTRUCTURA DE ARCHIVOS ANALIZADOS
-1. ARCHIVO SQL: aerolineas.sql📁 ESTRUCTURA DE ARCHIVOS ANALIZADOS
-1. ARCHIVO SQL: aerolineas.sql
-
+#### SQL
 ```sql
 - Creación de la base de datos y tabla principal
 CREATE DATABASE aerolineas;
